@@ -10,6 +10,10 @@ npm install
 yarn install
 ```
 
+## Banco de dados
+
+Dentro da pasta raiz está o arquivo 'loja.sql' com as tabelas e alguns dados para testar em um banco de dados SQL
+
 ## Executar
 
 Primeiro, dentro da pasta raiz rode o servidor Node.js com o comando:

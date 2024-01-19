@@ -2,24 +2,43 @@ const db = require("../db");
 
 function getVendas(req, res) {
     try {
-        // Lógica para buscar os dados das vendas no banco de dados
         const sql =
-            "SELECT `id`, `cliente_id`, `produto_id`, clientes.nome AS nomeVenda, produtos.nome AS nomeProduto, `quantidade`, `valorVenda`, `cidade`, `estado`, `endereco`, `status`, `created_at`, `updated_at` FROM `vendas`" +
-            "INNER JOIN `clientes`" +
-            "INNER JOIN `produtos`" +
-            "WHERE clientes.id = `cliente_id` AND produtos.id = `produto_id`";
+            "SELECT " +
+            "vendas.id, " +
+            "clientes.nome AS cliente, " +
+            "vendas.valorVenda, " +
+            "vendas.cidade, " +
+            "vendas.estado, " +
+            "vendas.endereco, " +
+            "vendas.status, " +
+            "vendas.created_at, " +
+            "GROUP_CONCAT(produtos.nome) AS produtos, " +
+            "GROUP_CONCAT(items_venda.quantidade) AS quantidades " +
+            "FROM vendas " +
+            "INNER JOIN clientes ON clientes.id = vendas.cliente_id " +
+            "LEFT JOIN items_venda ON items_venda.venda_id = vendas.id " +
+            "LEFT JOIN produtos ON produtos.id = items_venda.produto_id " +
+            "GROUP BY vendas.id";
 
         db.query(sql, (err, result) => {
             if (err) {
                 console.error("Erro ao buscar vendas no banco de dados: " + err);
                 res.status(500).json({ error: "Erro interno do servidor" });
             } else {
+                const vendasComProdutos = result.map((venda) => {
+                    return {
+                        ...venda,
+                        produtos: venda.produtos.split(','), // Convertendo a string para um array
+                        quantidades: venda.quantidades.split(',') // Convertendo a string para um array
+                    };
+                });
+
                 console.log("Vendas retornadas com sucesso");
-                res.status(200).json(result); // Assumindo que 'result' contêm os dados retornados da venda
+                res.status(200).json(vendasComProdutos); // Assumindo que 'result' contém os dados retornados da venda
             }
         });
     } catch (error) {
-        // Lide com erros de validação ou outros
+        console.error("Erro ao retornar vendas:", error);
         res.status(400).json({ error: "Erro ao retornar vendas" });
     }
 }
@@ -28,10 +47,11 @@ function getVendaById(req, res) {
     try {
         const { id } = req.params;
         const sql =
-            "SELECT `id`, `cliente_id`, `produto_id`, clientes.nome AS nomeVenda, produtos.nome AS nomeProduto, `quantidade`, `valorVenda`, `cidade`, `estado`, `endereco`, `status`, `created_at`, `updated_at` FROM `vendas`" +
+            "SELECT vendas.id, items_venda.venda_id, vendas.cliente_id, items_venda.produto_id, clientes.nome AS nomeVenda, produtos.nome AS nomeProduto, items_venda.quantidade, vendas.valorVenda, vendas.cidade, vendas.estado, vendas.endereco, vendas.status, vendas.created_at, vendas.updated_at FROM `vendas`" +
             "INNER JOIN `clientes`" +
             "INNER JOIN `produtos`" +
-            "WHERE clientes.id = `cliente_id` AND produtos.id = `produto_id` AND vendas.id = ?";
+            "INNER JOIN `items_venda`" +
+            "WHERE clientes.id = vendas.cliente_id AND produtos.id = items_venda.produto_id AND vendas.id = ?";
 
         db.query(sql, [id], (err, result) => {
             if (err) {
@@ -78,11 +98,11 @@ function vendas(req, res) {
 function editVendaById(req, res) {
     try {
         const { id } = req.params;
-        const { cliente_id, produto_id, quantidade, valorVenda, cidade, estado, endereco } = req.body;
+        const { cliente_id, valorVenda, cidade, estado, endereco, status } = req.body;
 
         // Lógica para atualizar os dados da venda no banco de dados com base no ID
-        const sql = `UPDATE vendas SET cliente_id = ?, produto_id = ?, quantidade = ?, valorVenda = ?, cidade = ?, estado = ?, endereco = ? WHERE id = ?`;
-        const values = [cliente_id, produto_id, quantidade, valorVenda, cidade, estado, endereco, id];
+        const sql = `UPDATE vendas SET cliente_id = ?, valorVenda = ?, cidade = ?, estado = ?, endereco = ?, status = ? WHERE id = ?`;
+        const values = [cliente_id, valorVenda, cidade, estado, endereco, status, id];
 
         db.query(sql, values, (err, result) => {
             if (err) {
