@@ -12,7 +12,7 @@ yarn install
 
 ## Executar
 
-Primeiro, rode o servidor Node.js com o comando:
+Primeiro, dentro da pasta raiz rode o servidor Node.js com o comando:
 
 ```bash
 node server.js
