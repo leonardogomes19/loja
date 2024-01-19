@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import dynamic from "next/dynamic";
 
+import PrivateRoute from "../../components/privateRoute.js";
+
 const Sidebar = dynamic(() => import("../../components/sidebar.js"), {
   ssr: false,
 });
@@ -33,7 +35,8 @@ const categorias = () => {
   }, []); // Array de dependência vazia para executar o efeito apenas uma vez quando o componente for montado
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
@@ -162,6 +165,8 @@ const categorias = () => {
         </table>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 };
 

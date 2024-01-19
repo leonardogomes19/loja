@@ -1,9 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
+
+import PrivateRoute from "../../components/privateRoute";
 
 const Sidebar = dynamic(() => import("../../components/sidebar.js"), {
   ssr: false,
@@ -107,7 +109,8 @@ export default function ClienteForm() {
   };
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
@@ -363,5 +366,7 @@ export default function ClienteForm() {
         </form>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 }

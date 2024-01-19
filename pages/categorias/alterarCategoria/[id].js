@@ -2,10 +2,11 @@ import React from "react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
+import PrivateRoute from "../../../components/privateRoute.js";
 
 const Sidebar = dynamic(() => import("../../../components/sidebar.js"), {
   ssr: false,
@@ -21,29 +22,29 @@ export default function EditCategoriaForm() {
     descricao: "",
   });
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:3001/getCategoria/${id}`
-          );
-  
-          if (response.status === 200) {
-            setCategoria(response.data);
-            setFormData(response.data);
-          } else {
-            // Lida com erros de validação ou outros
-          }
-        } catch (error) {
-          console.error(`Erro ao obter dados da categoria ${id}:`, error);
-          // Adicione um tratamento de erro, como exibição de uma mensagem para o usuário
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/getCategoria/${id}`
+        );
+
+        if (response.status === 200) {
+          setCategoria(response.data);
+          setFormData(response.data);
+        } else {
+          // Lida com erros de validação ou outros
         }
-      };
-  
-      if (id) {
-        fetchData();
+      } catch (error) {
+        console.error(`Erro ao obter dados da categoria ${id}:`, error);
+        // Adicione um tratamento de erro, como exibição de uma mensagem para o usuário
       }
-    }, [id]); 
+    };
+
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,10 +55,10 @@ export default function EditCategoriaForm() {
     e.preventDefault();
 
     try {
-      const campoVazio = Object.values(formData).some(valor => valor === "");
+      const campoVazio = Object.values(formData).some((valor) => valor === "");
 
       if (campoVazio) {
-        toast.error('Preencha os campos corretamente!', {
+        toast.error("Preencha os campos corretamente!", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -67,7 +68,6 @@ export default function EditCategoriaForm() {
           progress: undefined,
           theme: "dark",
         });
-
       } else {
         const response = await axios.put(
           `http://localhost:3001/editCategoria/${id}`,
@@ -75,7 +75,7 @@ export default function EditCategoriaForm() {
         );
 
         if (response.status === 200) {
-          toast.success('Alteração realizada com sucesso!', {
+          toast.success("Alteração realizada com sucesso!", {
             position: "top-center",
             autoClose: 1500,
             hideProgressBar: false,
@@ -87,10 +87,10 @@ export default function EditCategoriaForm() {
           });
 
           // Aguarda um período antes de redirecionar
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          await new Promise((resolve) => setTimeout(resolve, 2000));
 
           // Sucesso - redirecione para a página de clientes
-          router.push(`/categorias`)
+          router.push(`/categorias`);
           //window.location.href = "/categorias";
         } else {
           // Lida com erros de validação ou outros
@@ -102,13 +102,17 @@ export default function EditCategoriaForm() {
   };
 
   return (
+    <PrivateRoute>
     <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
         rel="stylesheet"
       ></link>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet"></link>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+        rel="stylesheet"
+      ></link>
       <div className="sidebar-container">
         <Sidebar></Sidebar>
       </div>
@@ -141,7 +145,6 @@ export default function EditCategoriaForm() {
                 className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
-
           </div>
 
           <div className="mb-4 flex">
@@ -183,5 +186,6 @@ export default function EditCategoriaForm() {
         </form>
       </div>
     </div>
+    </PrivateRoute>
   );
 }

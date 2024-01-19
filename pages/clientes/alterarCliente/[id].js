@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
+import PrivateRoute from "../../../components/privateRoute.js";
+
 const Sidebar = dynamic(() => import("../../../components/sidebar"), {
   ssr: false,
 });
@@ -29,7 +31,7 @@ export default function EditClienteForm() {
     complemento: "",
   });
 
-  console.log(formData)
+  console.log(formData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +49,7 @@ export default function EditClienteForm() {
       } catch (error) {
         console.error(`Erro ao obter dados do cliente ${id}:`, error);
         // Adicione um tratamento de erro, como exibição de uma mensagem para o usuário
-      } 
+      }
     };
 
     if (id) {
@@ -127,7 +129,7 @@ export default function EditClienteForm() {
           await new Promise((resolve) => setTimeout(resolve, 2000));
 
           // Sucesso - redirecione para a página de clientes
-          router.push(`/clientes`)
+          router.push(`/clientes`);
           //window.location.href = "/clientes";
         } else {
           // Lida com erros de validação ou outros
@@ -135,17 +137,21 @@ export default function EditClienteForm() {
       }
     } catch (error) {
       console.error("Erro ao alterar cadastro do cliente:", error);
-    } 
+    }
   };
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
         rel="stylesheet"
       ></link>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet"></link>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+        rel="stylesheet"
+      ></link>
       <div className="sidebar-container">
         <Sidebar></Sidebar>
       </div>
@@ -392,5 +398,7 @@ export default function EditClienteForm() {
         </form>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 }

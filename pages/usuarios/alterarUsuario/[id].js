@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
+import PrivateRoute from "../../../components/privateRoute";
+
 const Sidebar = dynamic(() => import("../../../components/sidebar.js"), {
   ssr: false,
 });
@@ -18,7 +20,6 @@ export default function EditUsuarioForm() {
   const [formData, setFormData] = useState({
     nivel: "",
   });
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,9 +43,9 @@ export default function EditUsuarioForm() {
     if (id) {
       fetchData();
     }
-  }, [id]); 
+  }, [id]);
 
-/*   const handleChange = (e) => {
+  /*   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   }; */
@@ -94,7 +95,7 @@ export default function EditUsuarioForm() {
           await new Promise((resolve) => setTimeout(resolve, 2000));
 
           // Sucesso - redirecione para a página de clientes
-          router.push(`/usuarios`)
+          router.push(`/usuarios`);
           //window.location.href = "/produtos";
         } else {
           // Lida com erros de validação ou outros
@@ -106,13 +107,17 @@ export default function EditUsuarioForm() {
   };
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
         rel="stylesheet"
       ></link>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet"></link>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+        rel="stylesheet"
+      ></link>
       <div className="sidebar-container">
         <Sidebar></Sidebar>
       </div>
@@ -143,7 +148,9 @@ export default function EditUsuarioForm() {
                 onChange={handleNivelChange}
                 className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               >
-                <option value="" selected disabled>Escolha uma opção</option>
+                <option value="" selected disabled>
+                  Escolha uma opção
+                </option>
                 <option value="operador">Operador</option>
                 <option value="administrador">Administrador</option>
                 <option value="gerencia">Gerencia</option>
@@ -170,5 +177,7 @@ export default function EditUsuarioForm() {
         </form>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 }

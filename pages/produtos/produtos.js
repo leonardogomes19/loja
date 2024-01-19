@@ -9,6 +9,8 @@ import withReactContent from "sweetalert2-react-content";
 import dynamic from "next/dynamic";
 import { format } from "date-fns"; // Importe a função format do date-fns
 
+import PrivateRoute from "../../components/privateRoute";
+
 const Sidebar = dynamic(() => import("../../components/sidebar"), {
   ssr: false,
 });
@@ -39,7 +41,8 @@ const Produtos = () => {
   };
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
@@ -108,7 +111,7 @@ const Produtos = () => {
                       : produto.descricao}
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
-                    {produto.preco}
+                    R${produto.preco}
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
                     {produto.estoque}
@@ -189,6 +192,8 @@ const Produtos = () => {
         </table>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 };
 

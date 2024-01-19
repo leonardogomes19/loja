@@ -5,6 +5,8 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { format } from "date-fns"; // Importe a função format do date-fns
 
+import PrivateRoute from "../../components/privateRoute";
+
 const Sidebar = dynamic(() => import("../../components/sidebar"), {
   ssr: false,
 });
@@ -14,6 +16,7 @@ const Vendas = () => {
   const [vendas, setVendas] = useState([]);
 
   useEffect(() => {
+
     // Buscar dados do endpoint '/vendas'
     axios
       .get("http://localhost:3001/getVendas")
@@ -33,15 +36,19 @@ const Vendas = () => {
   };
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+        rel="stylesheet"
+      ></link>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
         rel="stylesheet"
       ></link>
       <div className="sidebar-container">
         <Sidebar></Sidebar>
       </div>
-
       <div className="page-title">
         <h1 className="title">Vendas</h1>
       </div>
@@ -162,6 +169,8 @@ const Vendas = () => {
         </table>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 };
 

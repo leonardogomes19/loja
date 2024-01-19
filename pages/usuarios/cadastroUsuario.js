@@ -5,6 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
+import PrivateRoute from "../../components/privateRoute";
+
 const Sidebar = dynamic(() => import("../../components/sidebar.js"), {
   ssr: false,
 });
@@ -26,12 +28,11 @@ export default function UsuarioForm() {
     setShowPassword(!showPassword);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      console.log(formData)
+      console.log(formData);
       const campoVazio = Object.values(formData).some((valor) => valor === "");
 
       if (campoVazio) {
@@ -83,13 +84,17 @@ export default function UsuarioForm() {
   };
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
         rel="stylesheet"
       ></link>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet"></link>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+        rel="stylesheet"
+      ></link>
       <div className="sidebar-container">
         <Sidebar></Sidebar>
       </div>
@@ -165,10 +170,12 @@ export default function UsuarioForm() {
                 id="nivelSelect"
                 name="nivel"
                 value={formData.nivel}
-                onChange={handleNivelChange} 
+                onChange={handleNivelChange}
                 className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               >
-                <option value="" selected disabled>Escolha uma opção</option>
+                <option value="" selected disabled>
+                  Escolha uma opção
+                </option>
                 <option value="operador">Operador</option>
                 <option value="administrador">Administrador</option>
                 <option value="gerencia">Gerencia</option>
@@ -195,5 +202,7 @@ export default function UsuarioForm() {
         </form>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 }

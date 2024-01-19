@@ -5,7 +5,7 @@ function getProdutos(req, res){
   try {
     // Lógica para buscar os dados dos produtos no banco de dados
     const sql =
-      "SELECT produtos.id, produtos.nome, produtos.descricao, `preco`, `estoque`, `categoria_id`, categorias.nome AS `categoria`, produtos.created_at, produtos.updated_at FROM `produtos` INNER JOIN `categorias` WHERE `categoria_id` = categorias.id;";
+      "SELECT produtos.id, produtos.nome, produtos.descricao, `preco`, `estoque`, `categoria_id`, `caminho_img`, categorias.nome AS `categoria`, produtos.created_at, produtos.updated_at FROM `produtos` INNER JOIN `categorias` WHERE `categoria_id` = categorias.id;";
 
     db.query(sql, (err, result) => {
       if (err) {
@@ -28,7 +28,7 @@ function getProdutoById(req, res){
     const { id } = req.params;
     // Lógica para buscar os dados da produto no banco de dados
     const sql =
-      "SELECT produtos.id, produtos.nome, produtos.descricao, `preco`, `estoque`, `categoria_id`, categorias.nome AS `categoria`, produtos.created_at, produtos.updated_at FROM `produtos` INNER JOIN `categorias` WHERE `categoria_id` = categorias.id AND produtos.id = ?";
+      "SELECT produtos.id, produtos.nome, produtos.descricao, `preco`, `estoque`, `categoria_id`, `caminho_img`, categorias.nome AS `categoria`, produtos.created_at, produtos.updated_at FROM `produtos` INNER JOIN `categorias` WHERE `categoria_id` = categorias.id AND produtos.id = ?";
 
     db.query(sql, [id], (err, result) => {
       if (err) {
@@ -51,12 +51,12 @@ function getProdutoById(req, res){
 // Rota para lidar com a solicitação POST do formulário
 function produtos(req, res){
   try {
-    const { nome, descricao, preco, estoque, categoria_id } = req.body;
+    const { nome, descricao, preco, estoque, categoria_id, imagem } = req.body;
 
     // Lógica para inserir os dados do produto no banco de dados
     const sql =
-      "INSERT INTO produtos (nome, descricao, preco, estoque, categoria_id) VALUES (?, ?, ?, ?, ?)";
-    const values = [nome, descricao, preco, estoque, categoria_id];
+      "INSERT INTO produtos (nome, descricao, preco, estoque, categoria_id, caminho_img) VALUES (?, ?, ?, ?, ?, ?)";
+    const values = [nome, descricao, preco, estoque, categoria_id, imagem];
 
     db.query(sql, values, (err, result) => {
       if (err) {
@@ -77,11 +77,11 @@ function produtos(req, res){
 function editProdutoById(req, res){
   try {
     const { id } = req.params;
-    const { nome, descricao, preco, estoque, categoria_id } = req.body;
+    const { nome, descricao, preco, estoque, categoria_id, imagem } = req.body;
 
     // Lógica para atualizar os dados do cliente no banco de dados com base no ID
-    const sql = `UPDATE produtos SET nome = ?, descricao = ?, preco = ?, estoque = ?, categoria_id = ? WHERE id = ?`;
-    const values = [nome, descricao, preco, estoque, categoria_id, id];
+    const sql = `UPDATE produtos SET nome = ?, descricao = ?, preco = ?, estoque = ?, categoria_id = ?, caminho_img = ? WHERE id = ?`;
+    const values = [nome, descricao, preco, estoque, categoria_id, imagem, id];
 
     db.query(sql, values, (err, result) => {
       if (err) {

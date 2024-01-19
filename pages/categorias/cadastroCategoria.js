@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import dynamic from "next/dynamic";
 
+import PrivateRoute from "../../components/privateRoute.js";
 
 const Sidebar = dynamic(() => import("../../components/sidebar.js"), {
   ssr: false,
@@ -25,10 +26,10 @@ export default function CategoriaForm() {
     e.preventDefault();
 
     try {
-      const campoVazio = Object.values(formData).some(valor => valor === "");
+      const campoVazio = Object.values(formData).some((valor) => valor === "");
 
       if (campoVazio) {
-        toast.error('Preencha os campos corretamente!', {
+        toast.error("Preencha os campos corretamente!", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -38,7 +39,6 @@ export default function CategoriaForm() {
           progress: undefined,
           theme: "dark",
         });
-
       } else {
         const response = await axios.post(
           "http://localhost:3001/categorias",
@@ -46,7 +46,7 @@ export default function CategoriaForm() {
         );
 
         if (response.status === 200) {
-          toast.success('Cadastro realizado com sucesso!', {
+          toast.success("Cadastro realizado com sucesso!", {
             position: "top-center",
             autoClose: 2000,
             hideProgressBar: false,
@@ -58,7 +58,7 @@ export default function CategoriaForm() {
           });
 
           // Aguarda um período antes de redirecionar
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          await new Promise((resolve) => setTimeout(resolve, 2000));
 
           // Sucesso - redirecione para a página de clientes
           window.location.href = "/categorias/categorias";
@@ -72,13 +72,17 @@ export default function CategoriaForm() {
   };
 
   return (
-    <div>
+    <PrivateRoute>
+          <div>
       <ToastContainer></ToastContainer>
       <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
         rel="stylesheet"
       ></link>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet"></link>
+      <link
+        href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+        rel="stylesheet"
+      ></link>
       <div className="sidebar-container">
         <Sidebar></Sidebar>
       </div>
@@ -111,7 +115,6 @@ export default function CategoriaForm() {
                 className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
-
           </div>
 
           <div className="mb-4 flex">
@@ -153,5 +156,7 @@ export default function CategoriaForm() {
         </form>
       </div>
     </div>
+    </PrivateRoute>
+
   );
 }

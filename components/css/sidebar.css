@@ -30,6 +30,21 @@
     font-weight: 700;
   }
 
+  .user-info {
+    padding: 20px 20px 20px 20px;
+    font-size: 18px;
+  }
+
+  .user-icon {
+    background-color: #3498db; /* Cor de fundo do ícone do usuário */
+    color: #fff; /* Cor do ícone do usuário */
+  }
+  
+  .user-name {
+    font-weight: bold; /* Deixa o nome do usuário em negrito para destacar */
+    color: #fff; /* Cor do texto do nome do usuário */
+  }
+
   #icon-item {
     display: inline-block;
     padding: 0px 5px 3px 5px;
@@ -66,4 +81,38 @@
       on small screens
     */
     z-index: 12 !important;
+  }
+
+  #icon-item {
+    cursor: pointer
+
+  }
+
+  .logout {
+    padding: 20px 20px 20px 20px;
+    font-size: 18px;
+  }
+
+  .logout-name {
+    padding: 0px 0px 0px 5px;
+    vertical-align: text-bottom;
+  }
+
+  .typewriter {
+    padding: 0px 0px 0px 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+    display: inline-block;
+    /* border-right: 2px solid #3498db; */
+    animation: typing 2s steps(20) forwards;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
   }

@@ -104,6 +104,10 @@ app.prepare().then(() => {
     usuariosController.getUsuarios(req, res);
   });
 
+  server.post("/getUsuarioByLogin", (req, res) => {
+    usuariosController.getUsuarioByLogin(req, res);
+  });
+
   server.get("/getUsuario/:id", (req, res) => {
     usuariosController.getUsuarioById(req, res);
   });
