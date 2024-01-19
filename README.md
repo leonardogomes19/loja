@@ -24,4 +24,4 @@ Segundo, para iniciar o servidor de desenvolvimento local execute o comando:
 npx next dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) com o seu browser para executar o projeto.
+Por último, abra [http://localhost:3000](http://localhost:3000) com o seu browser para executar o projeto.
